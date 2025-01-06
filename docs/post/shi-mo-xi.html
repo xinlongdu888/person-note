@@ -10,18 +10,32 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="\begin{equation}  
-F = \frac{\hbar}{2\pi e} A_F,  
-\end{equation}  。">
+<meta name="description" content="### MATLAB 启动和退出指令
+
+#### **1. MATLAB 启动**
+在终端中运行以下指令启动 MATLAB：
+
+- **基本启动**：
+  ```bash
+  matlab
+  ```
+  (需要 MATLAB 的路径已经添加到环境变量中。">
 <meta property="og:title" content="石墨烯">
-<meta property="og:description" content="\begin{equation}  
-F = \frac{\hbar}{2\pi e} A_F,  
-\end{equation}  。">
+<meta property="og:description" content="### MATLAB 启动和退出指令
+
+#### **1. MATLAB 启动**
+在终端中运行以下指令启动 MATLAB：
+
+- **基本启动**：
+  ```bash
+  matlab
+  ```
+  (需要 MATLAB 的路径已经添加到环境变量中。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://xinlongdu888.github.io/person-note/post/shi-mo-xi.html">
 <meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
 <title>石墨烯</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -45,7 +59,17 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     body {padding: 8px;}
     .postTitle{font-size:24px;}
 }
-
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
 </style>
 
 
@@ -77,9 +101,142 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><p>\begin{equation}<br>
-F = \frac{\hbar}{2\pi e} A_F,<br>
-\end{equation}</p></div>
+<div class="markdown-body" id="postBody"><h3>MATLAB 启动和退出指令</h3>
+<h4><strong>1. MATLAB 启动</strong></h4>
+<p>在终端中运行以下指令启动 MATLAB：</p>
+<ul>
+<li>
+<p><strong>基本启动</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">matlab</pre></div>
+<p>(需要 MATLAB 的路径已经添加到环境变量中。)</p>
+</li>
+<li>
+<p><strong>指定路径启动</strong> (如果没有配置路径)：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">/完整路径/MATLAB版本/bin/matlab</pre></div>
+<p>例如：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">/home/MATLAB/R2019b/bin/matlab</pre></div>
+</li>
+<li>
+<p><strong>无图形界面启动</strong> (适用于服务器或终端模式)：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">matlab -nodisplay -nodesktop</pre></div>
+</li>
+<li>
+<p><strong>跳过 Java 环境启动</strong> (用于解决 GUI 启动问题)：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">matlab -nojvm</pre></div>
+</li>
+</ul>
+<hr>
+<h4><strong>2. MATLAB 退出</strong></h4>
+<p>以下指令均可退出 MATLAB：</p>
+<ul>
+<li>
+<p><strong>在 MATLAB 命令窗口中</strong>：</p>
+<div class="highlight highlight-source-matlab"><pre class="notranslate"><span class="pl-smi">exit</span></pre></div>
+<p>或</p>
+<div class="highlight highlight-source-matlab"><pre class="notranslate"><span class="pl-smi">quit</span></pre></div>
+</li>
+<li>
+<p><strong>强制退出 MATLAB</strong> (适用于卡住或无响应的情况)：</p>
+<ul>
+<li>在终端中：
+<div class="highlight highlight-source-shell"><pre class="notranslate">killall matlab</pre></div>
+</li>
+<li>或者找到过程 ID (PID) 后结束：
+<div class="highlight highlight-source-shell"><pre class="notranslate">ps aux <span class="pl-k">|</span> grep matlab
+<span class="pl-c1">kill</span> -9 PID</pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>PBS 作业调度脚本解析</h3>
+<h4><strong>PBS 作业脚本</strong></h4>
+<p>以下是您提供的 PBS 脚本，用于在集群上提交 MATLAB 作业。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span>PBS -N jobname11</span>
+<span class="pl-c"><span class="pl-c">#</span>PBS -l nodes=1:ppn=24</span>
+<span class="pl-c1">cd</span> <span class="pl-smi">$PBS_O_WORKDIR</span>
+cat <span class="pl-smi">$PBS_NODEFILE</span>
+/home/MATLAB/R2019b/bin/matlab -nodesktop -nosplash<span class="pl-k">&lt;</span>  YpnT2disorder1.m <span class="pl-k">&gt;</span> log <span class="pl-k">2&gt;&amp;1</span></pre></div>
+<h4><strong>脚本分析</strong></h4>
+<ol>
+<li>
+<p><strong>指定作业名称</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span>PBS -N jobname11</span></pre></div>
+<ul>
+<li><strong>含义</strong>：设置作业名称为 <code class="notranslate">jobname11</code> ，方便管理和识别作业。</li>
+<li><strong>作用</strong>：PBS 调度系统会将此名称用于日志文件和监控作业状态。</li>
+</ul>
+</li>
+<li>
+<p><strong>请求资源</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span>PBS -l nodes=1:ppn=24</span></pre></div>
+<ul>
+<li><strong>含义</strong>：
+<ul>
+<li><code class="notranslate">nodes=1</code>：请求使用 1 个计算节点。</li>
+<li><code class="notranslate">ppn=24</code>：请求每个节点使用 24 个处理器核心。</li>
+</ul>
+</li>
+<li><strong>作用</strong>：告诉调度系统作业需要的计算资源，调度系统会根据请求分配选定节点和处理器。</li>
+</ul>
+</li>
+<li>
+<p><strong>切换工作目录</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c1">cd</span> <span class="pl-smi">$PBS_O_WORKDIR</span></pre></div>
+<ul>
+<li><strong>含义</strong>：切换工作目录到作业提交时所在的目录，<code class="notranslate">$PBS_O_WORKDIR</code> 是 PBS 提供的环境变量。</li>
+<li><strong>作用</strong>：确保脚本运行时的工作环境与提交时一致。</li>
+</ul>
+</li>
+<li>
+<p><strong>查看节点信息</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">cat <span class="pl-smi">$PBS_NODEFILE</span></pre></div>
+<ul>
+<li><strong>含义</strong>：打印 PBS 系统生成的节点文件，详细列出分配给作业的节点名称。</li>
+<li><strong>作用</strong>：确认作业运行在哪些节点上，或将节点信息传递给其他程序。</li>
+</ul>
+</li>
+<li>
+<p><strong>运行 MATLAB</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">/home/MATLAB/R2019b/bin/matlab -nodesktop -nosplash<span class="pl-k">&lt;</span>  YpnT2disorder1.m <span class="pl-k">&gt;</span> log <span class="pl-k">2&gt;&amp;1</span></pre></div>
+<ul>
+<li><strong>含义</strong>：
+<ol>
+<li><code class="notranslate">/home/MATLAB/R2019b/bin/matlab</code>：运行 MATLAB 的可执行文件。</li>
+<li><code class="notranslate">-nodesktop</code>：以无图形用户界面模式运行 MATLAB。</li>
+<li><code class="notranslate">-nosplash</code>：启动 MATLAB 时不显示启动画面。</li>
+<li><code class="notranslate">&lt; YpnT2disorder1.m</code>：重定向输入，将 MATLAB 脚本 <code class="notranslate">YpnT2disorder1.m</code> 的内容作为 MATLAB 的输入。</li>
+<li><code class="notranslate">&gt; log</code>：将标准输出重定向到 <code class="notranslate">log</code> 文件。</li>
+<li><code class="notranslate">2&gt;&amp;1</code>：将标准错误输出也重定向到 <code class="notranslate">log</code> 文件中。</li>
+</ol>
+</li>
+<li><strong>作用</strong>：运行 MATLAB 脚本 <code class="notranslate">YpnT2disorder1.m</code>，并将运行的日志信息 (包括错误信息) 保存到 <code class="notranslate">log</code> 文件中。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4><strong>为什么可以调用节点？</strong></h4>
+<ol>
+<li>
+<p><strong>PBS 作业调度系统</strong>：</p>
+<ul>
+<li>PBS 是一个分布式作业调度系统，用于在 HPC (高性能计算) 集群中管理和分配计算资源。调用节点是因为脚本使用了 PBS 指令（以 <code class="notranslate">#PBS</code> 开头），这些指令会被调度系统解析和执行。</li>
+</ul>
+</li>
+<li>
+<p><strong>资源分配机制</strong>：</p>
+<ul>
+<li>PBS 根据脚本中的资源请求（如 <code class="notranslate">nodes=1:ppn=24</code>），从集群中找到符合条件的节点，锁定这些资源，并将作业分发到分配的节点上。</li>
+</ul>
+</li>
+<li>
+<p><strong>节点的角色</strong>：</p>
+<ul>
+<li>PBS 脚本运行时，请求的节点是集群的一部分，这些节点通常通过高速网络相连。</li>
+<li>PBS 作业会被提交到调度系统，调度系统会调用定前节点并在其上启动脚本。</li>
+</ul>
+</li>
+</ol></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
@@ -104,7 +261,7 @@ if(""!=""){
 </script></div>
 </body>
 <script>
-var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
 var utterancesLoad=0;
 
 let themeSettings={
@@ -177,7 +334,70 @@ function iFrameLoading(){
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
 
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
 
 </script>
 
